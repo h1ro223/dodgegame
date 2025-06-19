@@ -4,6 +4,7 @@ const scoreEl = document.getElementById("score");
 const gameOverEl = document.getElementById("gameOver");
 const playBtn = document.getElementById("playBtn");
 const countdown = document.getElementById("countdown");
+const retryBtn = document.getElementById("retryBtn");
 
 let bombs = [];
 let score = 0;
@@ -22,19 +23,25 @@ function moveUFO(x, y) {
   targetY = y;
 }
 
-// PC操作
 document.addEventListener("mousemove", (e) => {
   moveUFO(e.clientX, e.clientY);
 });
 
-// スマホ操作
 document.addEventListener("touchmove", (e) => {
   const touch = e.touches[0];
   if (touch) moveUFO(touch.clientX, touch.clientY);
 });
 
+// 長押しコピーを完全無効化
+document.addEventListener("contextmenu", (e) => e.preventDefault());
+
 playBtn.addEventListener("click", () => {
   playBtn.classList.add("hidden");
+  startCountdown();
+});
+
+retryBtn.addEventListener("click", () => {
+  gameOverEl.classList.add("hidden");
   startCountdown();
 });
 
@@ -59,10 +66,10 @@ function startCountdown() {
 
 function startGame() {
   score = 0;
+  bombs.forEach(b => b.remove());
   bombs = [];
   gameRunning = true;
   gameStarted = true;
-  gameOverEl.classList.add("hidden");
   updateBombSpawnRate();
   gameLoop();
 }
@@ -141,9 +148,9 @@ function gameOver() {
 function gameLoop() {
   if (!gameRunning) return;
 
-  // UFOを滑らかに追従
-  ufoX += (targetX - ufoX) * 0.1;
-  ufoY += (targetY - ufoY) * 0.1;
+  // よりスムーズに追従（速さ上げる）
+  ufoX += (targetX - ufoX) * 0.2;
+  ufoY += (targetY - ufoY) * 0.2;
   ufo.style.left = ufoX - ufo.offsetWidth / 2 + "px";
   ufo.style.top = ufoY - ufo.offsetHeight / 2 + "px";
 
