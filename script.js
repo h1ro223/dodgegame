@@ -9,10 +9,23 @@ let bombs = [];
 let score = 0;
 let gameRunning = false;
 let gameStarted = false;
+let bombIntervalId = null;
 
+// UFOの位置更新（共通関数）
+function moveUFO(x, y) {
+  ufo.style.left = x - ufo.offsetWidth / 2 + "px";
+  ufo.style.top = y - ufo.offsetHeight / 2 + "px";
+}
+
+// マウス操作
 document.addEventListener("mousemove", (e) => {
-  ufo.style.left = e.clientX - ufo.offsetWidth / 2 + "px";
-  ufo.style.top = e.clientY - ufo.offsetHeight / 2 + "px";
+  moveUFO(e.clientX, e.clientY);
+});
+
+// タッチ操作
+document.addEventListener("touchmove", (e) => {
+  const touch = e.touches[0];
+  if (touch) moveUFO(touch.clientX, touch.clientY);
 });
 
 playBtn.addEventListener("click", () => {
@@ -45,10 +58,21 @@ function startGame() {
   gameRunning = true;
   gameStarted = true;
   gameOverEl.classList.add("hidden");
+  updateBombSpawnRate();
   gameLoop();
-  setInterval(() => {
+}
+
+function updateBombSpawnRate() {
+  if (bombIntervalId) clearInterval(bombIntervalId);
+
+  let interval = 300;
+  if (score >= 300) interval = 150;
+  else if (score >= 200) interval = 200;
+  else if (score >= 100) interval = 250;
+
+  bombIntervalId = setInterval(() => {
     if (gameRunning) createBomb();
-  }, 500);
+  }, interval);
 }
 
 function createBomb() {
@@ -57,7 +81,7 @@ function createBomb() {
   bomb.textContent = "💣";
   bomb.style.left = Math.random() * (window.innerWidth - 40) + "px";
   bomb.style.top = "-40px";
-  bomb.dataset.vy = "2"; // 初速
+  bomb.dataset.vy = "2";
   gameArea.appendChild(bomb);
   bombs.push(bomb);
 }
@@ -72,7 +96,6 @@ function updateBombs() {
     let top = parseFloat(bomb.style.top);
     let vy = parseFloat(bomb.dataset.vy);
 
-    // 重力加速
     vy += 0.2;
     bomb.dataset.vy = vy;
     bomb.style.top = top + vy + "px";
@@ -99,11 +122,15 @@ function updateBombs() {
 function updateScore() {
   score++;
   scoreEl.textContent = `Score: ${score}`;
+  if (score % 100 === 0) {
+    updateBombSpawnRate();
+  }
 }
 
 function gameOver() {
   gameRunning = false;
   gameOverEl.classList.remove("hidden");
+  if (bombIntervalId) clearInterval(bombIntervalId);
 }
 
 function gameLoop() {
