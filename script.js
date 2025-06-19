@@ -11,18 +11,23 @@ let gameRunning = false;
 let gameStarted = false;
 let bombIntervalId = null;
 
-// UFOの位置更新（共通関数）
+// スムーズ追従用変数
+let targetX = window.innerWidth / 2;
+let targetY = window.innerHeight / 2;
+let ufoX = targetX;
+let ufoY = targetY;
+
 function moveUFO(x, y) {
-  ufo.style.left = x - ufo.offsetWidth / 2 + "px";
-  ufo.style.top = y - ufo.offsetHeight / 2 + "px";
+  targetX = x;
+  targetY = y;
 }
 
-// マウス操作
+// PC操作
 document.addEventListener("mousemove", (e) => {
   moveUFO(e.clientX, e.clientY);
 });
 
-// タッチ操作
+// スマホ操作
 document.addEventListener("touchmove", (e) => {
   const touch = e.touches[0];
   if (touch) moveUFO(touch.clientX, touch.clientY);
@@ -135,6 +140,13 @@ function gameOver() {
 
 function gameLoop() {
   if (!gameRunning) return;
+
+  // UFOを滑らかに追従
+  ufoX += (targetX - ufoX) * 0.1;
+  ufoY += (targetY - ufoY) * 0.1;
+  ufo.style.left = ufoX - ufo.offsetWidth / 2 + "px";
+  ufo.style.top = ufoY - ufo.offsetHeight / 2 + "px";
+
   updateBombs();
   updateScore();
   requestAnimationFrame(gameLoop);
