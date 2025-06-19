@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>ハート避けゲーム</title>
-  <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div id="gameArea">
@@ -12,8 +12,11 @@
     <div id="countdown" class="hidden">3</div>
     <div id="ufo">❤</div>
     <div id="score">Score: 0</div>
-    <div id="gameOver" class="hidden">Game Over</div>
+    <div id="gameOver" class="hidden">
+      Game Over<br />
+      <button id="retryBtn">リトライ</button>
+    </div>
   </div>
-  <script src="./script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
