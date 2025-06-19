@@ -157,4 +157,4 @@ function gameLoop() {
   updateBombs();
   updateScore();
   requestAnimationFrame(gameLoop);
-}
+} 
