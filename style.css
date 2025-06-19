@@ -9,6 +9,7 @@ body {
   position: relative;
   width: 100vw;
   height: 100vh;
+  touch-action: none; /* スマホでスクロール防止 */
   cursor: none;
 }
 
@@ -17,8 +18,8 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 36px;
-  padding: 20px 40px;
+  font-size: 5vw;
+  padding: 3vw 6vw;
   cursor: pointer;
   z-index: 10;
 }
@@ -28,20 +29,20 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 60px;
+  font-size: 10vw;
   color: black;
   z-index: 10;
 }
 
 #ufo {
-  font-size: 40px;
+  font-size: 8vw;
   position: absolute;
   pointer-events: none;
   z-index: 1;
 }
 
 .bomb {
-  font-size: 40px;
+  font-size: 8vw;
   position: absolute;
   z-index: 1;
 }
@@ -51,7 +52,7 @@ body {
   top: 10px;
   left: 10px;
   color: black;
-  font-size: 20px;
+  font-size: 5vw;
 }
 
 #gameOver {
@@ -60,7 +61,7 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
   color: red;
-  font-size: 40px;
+  font-size: 8vw;
   z-index: 10;
 }
 
